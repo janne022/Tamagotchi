@@ -42,4 +42,11 @@
     <bordedom>0</bordedom>
     <oldTime>2020-10-12T12:52:28.7505709+02:00</oldTime>
   </Tamagotchi>
+  <Tamagotchi>
+    <difficulty>4</difficulty>
+    <name>tja</name>
+    <hunger>2</hunger>
+    <bordedom>0</bordedom>
+    <oldTime>2020-10-13T14:35:38.7076938+02:00</oldTime>
+  </Tamagotchi>
 </ArrayOfTamagotchi>

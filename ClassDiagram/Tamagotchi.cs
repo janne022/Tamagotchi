@@ -33,23 +33,44 @@ namespace ClassDiagram
             {
                 hunger = 0;
             }
+            System.Console.WriteLine("Fed " + name);
         }
         public void Hi()
         {
             if (words.Count == 0)
             {
-               System.Console.WriteLine(name + ": tja"); 
+                System.Console.WriteLine();
+                System.Console.WriteLine("You: Hi");
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.Write(name);
+                Console.ForegroundColor = ConsoleColor.White;
+                System.Console.Write(": tja"); 
+                System.Console.WriteLine();
             }
             else
             {
-                System.Console.WriteLine(name + ": " + words[generator.Next(0, words.Count)]);
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine();
+                System.Console.WriteLine("You: Hi");
+                System.Console.Write(name);
+                Console.ForegroundColor = ConsoleColor.White;
+                System.Console.Write(": " + words[generator.Next(0, words.Count)]); 
+                System.Console.WriteLine();
             }
             ReduceBoredom();
         }
         public void Teach(string word)
         {
-            words.Add(word.Trim());
-            ReduceBoredom();
+            if (word.Length != 0)
+            {
+                words.Add(word.Trim());
+                ReduceBoredom();
+                System.Console.WriteLine("New word learned!");
+            }
+            else
+            {
+                System.Console.WriteLine("Your word can't be 0 characters long!");
+            }
         }
         public void PrintStats()
         {
@@ -82,6 +103,7 @@ namespace ClassDiagram
                 minutesToTick = 1;
                 break;
             }
+            //check time to see
             DateTime currentTime = DateTime.Now;
             long diffTicks = currentTime.Ticks - oldTime.Ticks;
             TimeSpan diffTime = new TimeSpan(diffTicks);
@@ -94,6 +116,7 @@ namespace ClassDiagram
                 }
                 oldTime = DateTime.Now;
             }
+            //if huner or boredom is or is over 10 it will die
             if (hunger >= 10 || bordedom >= 10)
             {
                 isAlive = false;

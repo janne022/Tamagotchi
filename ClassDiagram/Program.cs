@@ -85,16 +85,20 @@ namespace ClassDiagram
             switch (x)
             {
               case 0:
+              //Teach new word
                 Console.Write("New word: ");
                 tamagotchiList[intChoice].Teach(Console.ReadLine());
                 break;
               case 1:
+              //say hi to pet
                 tamagotchiList[intChoice].Hi();
                 break;
               case 2:
+              //Feed pet
                 tamagotchiList[intChoice].Feed();
                 break;
               case 3:
+              //Print stats
                 tamagotchiList[intChoice].PrintStats();
               break;
               case 4:
@@ -180,28 +184,12 @@ namespace ClassDiagram
                             }
                             else if (Ui.Key == ConsoleKey.Enter)
                             {
-                              switch (x)
-                              {
-                                case 0:
-                                  difficulty = 0;
-                                break;
-                                case 1:
-                                difficulty = 1;
-                                break;
-                                case 2:
-                                difficulty = 2;
-                                break;
-                                case 3:
-                                difficulty = 3;
-                                break;
-                                case 4:
-                                difficulty = 4;
-                                break;
-                              }
+                              difficulty = x;
                               x = 0;
                               break;
                             }
                           }
+                          //if valid name, add it to the list (also adds difficulty)
                           if (nameTamagotchi != "")
                           {
                             nameTamagotchi = SecurityElement.Escape(nameTamagotchi);
@@ -225,6 +213,7 @@ namespace ClassDiagram
                             Console.ReadLine();
                               break;
                           }
+                          //UI to choose pet
                           while (true)
                           {
                             System.Console.WriteLine("Choose a pet!");
@@ -293,7 +282,7 @@ namespace ClassDiagram
               waiting for the thread to close, since Thread.Sleep() will delay the closing of while loop*/
               tamagotchis[intChoice].Tick();
               SaveInstances(tamagotchis, serializer);
-              Thread.Sleep(5000);
+              Thread.Sleep(10000);
             }
         }
     }

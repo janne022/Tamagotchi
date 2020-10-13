@@ -9,7 +9,7 @@ namespace ClassDiagram
         bool isAlive = true;
         public int difficulty = 0;
         Random generator = new Random();
-        public string name = SecurityElement.Escape("");
+        public string name = "";
 
         List<string> words = new List<string>();
         public int hunger = 0;

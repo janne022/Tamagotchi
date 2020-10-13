@@ -3,6 +3,7 @@ using System.Threading;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.IO;
+using System.Security;
 
 namespace ClassDiagram
 {
@@ -11,9 +12,11 @@ namespace ClassDiagram
         static bool threadCondition = true;
         static void Main(string[] args)
         {
+          //declaring variables
             int intChoice;
             List<Tamagotchi> tamagotchiList = new List<Tamagotchi>();
             XmlSerializer serializer = new XmlSerializer(typeof(List<Tamagotchi>));
+            //loads old save file if it exists
             if (File.Exists("tamagotchis.xml"))
             {
                 tamagotchiList = LoadInstances(tamagotchiList, serializer);
@@ -43,15 +46,16 @@ namespace ClassDiagram
             int x = 0;
         while (true)
         {
-            if (tamagotchiList[intChoice].GetAlive() == false)
-            {
-                Console.Clear();
-                System.Console.WriteLine("Oh no! it looks like your pet died... Press Enter to bury your pet");
-                Console.ReadLine();
-                tamagotchiList.RemoveAt(intChoice);
-                return;
-            }
-
+          //if pet dies it will remove the pet from the list
+          if (tamagotchiList[intChoice].GetAlive() == false)
+          {
+              Console.Clear();
+              System.Console.WriteLine("Oh no! it looks like your pet died... Press Enter to bury your pet");
+              tamagotchiList.RemoveAt(intChoice);
+              Console.ReadLine();
+              return;
+          }
+          //UI that let's you choose actions for pet
           Console.Clear();
           string[] array = new string[]{$"Teach {tamagotchiList[intChoice].name} a new word", $"Say hello to {tamagotchiList[intChoice].name}", $"Feed {tamagotchiList[intChoice].name}","Check Health","Main Menu"};
           for (int i = 0; i < x; i++)
@@ -107,6 +111,7 @@ namespace ClassDiagram
             while (true)
             {
               int x = 0;
+              //UI that lets user choose if user wants to create tamagochi or load a previously created one
                 while (true)
                 {
                   Console.Clear();
@@ -138,6 +143,7 @@ namespace ClassDiagram
                     switch (x)
                     {
                       case 0:
+                      //while loop with UI to let user create pet, name it and select difficulty
                        while (true)
                        {
                           Console.Clear();
@@ -198,19 +204,20 @@ namespace ClassDiagram
                           }
                           if (nameTamagotchi != "")
                           {
-                              
-                              tamagotchiList.Add(new Tamagotchi{name = nameTamagotchi.Trim(), difficulty = difficulty});
-                              SaveInstances(tamagotchiList,serializer);
-                              break;
+                            nameTamagotchi = SecurityElement.Escape(nameTamagotchi);
+                            tamagotchiList.Add(new Tamagotchi{name = nameTamagotchi.Trim(), difficulty = difficulty});
+                            SaveInstances(tamagotchiList,serializer);
+                            break;
                           }
                           else
                           {
-                              System.Console.WriteLine("Invalid Name! Press Enter to try again");
-                              Console.ReadLine();
+                            System.Console.WriteLine("Invalid Name! Press Enter to try again");
+                            Console.ReadLine();
                           }
                       }
                     break;
                     case 1:
+                          //UI that lets user load previous tamagochis
                           int xPet = 0;
                           if (tamagotchiList.Count == 0)
                           {
@@ -261,6 +268,7 @@ namespace ClassDiagram
         }
         static List<Tamagotchi> LoadInstances(List<Tamagotchi> tamagotchiList, XmlSerializer serializer)
         {
+          //filestream closes with using statement. Opens file, deserialize it to List with tamagochis and returns it.
             using (FileStream tamagotchiStream = File.OpenRead("tamagotchis.xml"))
             {
                 tamagotchiList = (List<Tamagotchi>)serializer.Deserialize(tamagotchiStream);
@@ -270,18 +278,22 @@ namespace ClassDiagram
         }
         static void SaveInstances(List<Tamagotchi> tamagotchiList, XmlSerializer serializer)
         {
-            using (FileStream tamagotchiFile = File.Open("tamagotchis.xml", FileMode.OpenOrCreate))
-            {
-                serializer.Serialize(tamagotchiFile, tamagotchiList);
-            }
+          //filestream closes safely with using statement. Open or creates file and serializes the list inputed in parameter.
+          using (FileStream tamagotchiFile = File.Open("tamagotchis.xml", FileMode.OpenOrCreate))
+          {
+              serializer.Serialize(tamagotchiFile, tamagotchiList);
+          }
         }
         public static void ThreadTick(List<Tamagotchi> tamagotchis, XmlSerializer serializer, int intChoice)
         {
+          //the thread longs when the static bool is true (check main to see when threadcondition is true)
             while (threadCondition == true)
             {
-                tamagotchis[intChoice].Tick();
-                SaveInstances(tamagotchis, serializer);
-                Thread.Sleep(10000);
+              /*runs tick for the chosed tamagochi and saves tamagochis, because of Thread.Sleep(), it might take a while
+              waiting for the thread to close, since Thread.Sleep() will delay the closing of while loop*/
+              tamagotchis[intChoice].Tick();
+              SaveInstances(tamagotchis, serializer);
+              Thread.Sleep(5000);
             }
         }
     }

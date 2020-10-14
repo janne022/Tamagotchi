@@ -89,10 +89,10 @@ namespace ClassDiagram
             switch (difficulty)
             {
                 case 0:
-                minutesToTick = 120;
+                minutesToTick = 60;
                 break;
                 case 1:
-                minutesToTick = 60;
+                minutesToTick = 40;
                 break;
                 case 2:
                 minutesToTick = 30;

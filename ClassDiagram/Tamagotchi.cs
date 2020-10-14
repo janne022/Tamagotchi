@@ -6,6 +6,7 @@ namespace ClassDiagram
 {
     public class Tamagotchi
     {
+        //Variables
         bool isAlive = true;
         public int difficulty = 0;
         Random generator = new Random();
@@ -17,7 +18,7 @@ namespace ClassDiagram
         public DateTime oldTime = DateTime.Now;
         long minutesToTick = 1;
 
-
+        //Methods
         public bool GetAlive()
         {
             return isAlive;
@@ -103,7 +104,7 @@ namespace ClassDiagram
                 minutesToTick = 1;
                 break;
             }
-            //check time to see
+            //check differential time between latest saved point and current point (in time)
             DateTime currentTime = DateTime.Now;
             long diffTicks = currentTime.Ticks - oldTime.Ticks;
             TimeSpan diffTime = new TimeSpan(diffTicks);
@@ -116,7 +117,7 @@ namespace ClassDiagram
                 }
                 oldTime = DateTime.Now;
             }
-            //if huner or boredom is or is over 10 it will die
+            //if hunger or boredom is or is over 10 it will die
             if (hunger >= 10 || bordedom >= 10)
             {
                 isAlive = false;
